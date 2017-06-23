@@ -1,3 +1,4 @@
+//initializing firebase backend
 var config = {
     apiKey: "AIzaSyD5F4mUO86mkrIYBTBUZSLPJuF5fOUfB7A",
     authDomain: "train-tracker-5b7cf.firebaseapp.com",
@@ -8,16 +9,23 @@ var config = {
   };
   firebase.initializeApp(config);
 
+// setting up the database as a variable to manipulate
 var database = firebase.database();
 
+//creating on "click" event to allow user to add new trains
 $("#addTrain").on("click", function(event) {
+	//stops page from refreshing every time the submit button is pressed
 	event.preventDefault();
 
+	//saving input values as variables
+	//converting time of first train into unix time in order to calculate 
+	//differences easily
 	name = $("#train-name").val().trim();
 	dest = $("#train-dest").val().trim();
 	start = moment($("#train-start").val().trim(), "HH:mm").subtract(10, "years").format("X");
 	interval = $("#train-int").val().trim();
 
+	//storing previous values as an object to be passed to database
 	var newTrain = {
 		trainName: name,
 		destination: dest,
@@ -25,49 +33,50 @@ $("#addTrain").on("click", function(event) {
 		frequency: interval
 	}
 
+	//console.log(newTrain);
+
+	//storing object to the back-end database
 	database.ref().push(newTrain);
 
-	// console.log(newTrain.trainName);
-	// console.log(newTrain.destination);
-	// console.log(newTrain.firstTrain);
-	// console.log(newTrain.frequency);
-
+	//clearing input fields on submit so user does not have to manually delete
 	$("#train-name").val("");
 	$("#train-dest").val("");
 	$("#train-start").val("");
 	$("#train-int").val("");
 
+	//exiting the function
 	return false;
 
-	$("#train-data").html(
-		"<table class='table'><tr><th>Train Name</th><th>Destination</th><th>Frequency (min)</th><th>Next Arrival</th><th>Minutes Away</th></tr></table>"
-		)
 });
 
+//creating an event listener to generate data to the page and process calculations
+//every time a new object is added to database the following events will trigger
 database.ref().orderByChild("dateAdded").on("child_added", function(childSnapshot) {
+	//creating temp variables based on each new child
 	var displayName = childSnapshot.val().trainName;
 	var displayDest = childSnapshot.val().destination;
-	var displayFirst = childSnapshot.val().firstTrain;
 	var displayFreq = childSnapshot.val().frequency;
-
+	var displayFirst = childSnapshot.val().firstTrain;
+	
+	//calculating time differences
 	var timeDiff = moment().diff(moment.unix(displayFirst), "minutes");
-	var timeRemain = moment().diff(moment.unix(displayFirst), "minutes") % displayFirst;
+	var timeRemain = moment().diff(moment.unix(displayFirst), "minutes") % displayFreq;
 	var timeMinutes = displayFreq - timeRemain;
 
+	//determining when the next train will arrive and displaying in minutes
 	var nextArrival = moment().add(timeMinutes, "m").format("hh:mm A");
-	console.log(timeMinutes);
-	console.log(nextArrival);
+	// console.log(timeMinutes);
+	// console.log(nextArrival);
 
-	console.log(moment().format("X"));
+	// console.log(moment().format("X"));
 
-	$("train-data").append("<tr><td>" + displayName +
+	//adding each new train to the page
+	$("#train-table").append("<tr><td>" + displayName +
 		"</td><td>" + displayDest +
 		"</td><td>" + displayFreq +
 		"</td><td>" + nextArrival +
 		"</td><td>" + timeMinutes + "</td></tr>")
-	
+
 }, function(errorObject) {
 	console.log(errorObject.code);
 });
-
-console.log(moment().format("DD/MM/YY hh:mm A"));

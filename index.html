@@ -10,48 +10,63 @@
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+  <link rel="stylesheet" type="text/css" href="assets/style.css">
+
 	<script
 	  src="https://code.jquery.com/jquery-3.2.1.min.js"
 	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	  crossorigin="anonymous"></script>
+
   <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+
 </head>
 <body>
-<div class="container">
-  <div class="jumbotron">
-    <h1>Personal Train Tracker</h1> 
-    <p>Enter the information on trains you use frequently to help manage your schedule.</p>
-  </div> 
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>Personal Train Tracker</h1> 
+      <p>Enter the information on trains you use frequently to help manage your schedule.</p>
+    </div> 
 
-  <div class="row">
-  	<div class="panel panel-default">
-  		<div class="panel-heading">Your Trains</div>
-  		<div class="panel-body" id="train-data"></div>
-  	</div>
+    <div class="row">
+      <div class="col-md-12">
+      	<div class="panel panel-primary">
+      		<div class="panel-heading">Your Trains</div>
+      		<div class="panel-body" id="train-data">
+            <table class="table" id="train-table">
+              <tr>
+                <th>Train Name</th>
+                <th>Destination</th>
+                <th>Frequency (min)</th>
+                <th>Next Arrival</th>
+                <th>Minutes Away</th>
+              </tr>
+            </table>  
+          </div>
+      	</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+      	<div class="panel panel-primary">
+      		<div class="panel-heading">Add a New Train</div>
+      		<div class="panel-body">
+      			<form>
+      				<label for="trainName">Train Name</label><br>
+      				<input type="text" name="trainName" id="train-name"><br>
+      				<label for="destination">Train Destination</label><br>
+      				<input type="text" name="destination" id="train-dest"><br>
+      				<label for="firstTime">First Train Time (HH:MM - Military Time)</label><br>
+      				<input type="text" name="firstTime" id="train-start"><br>
+      				<label for="frequency">Frequency (min)</label><br>
+      				<input type="text" name="frequency" id="train-int"><br>
+      				<button type="submit" id="addTrain">Submit</button>
+      			</form>
+      		</div>
+      	</div>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="container">
-  <div class="row">
-  	<div class="panel panel-default">
-  		<div class="panel-heading">Add a New Train</div>
-  		<div class="panel-body">
-  			<form>
-  				<label for="trainName">Train Name</label><br>
-  				<input type="text" name="trainName" id="train-name"><br>
-  				<label for="destination">Train Destination</label><br>
-  				<input type="text" name="destination" id="train-dest"><br>
-  				<label for="firstTime">First Train Time (HH:MM - Military Time)</label><br>
-  				<input type="text" name="firstTime" id="train-start"><br>
-  				<label for="frequency">Frequency (min)</label><br>
-  				<input type="text" name="frequency" id="train-int"><br>
-  				<button type="submit" id="addTrain">Submit</button>
-  			</form>
-  		</div>
-  	</div>
-  </div>
-
-</div>
 
 <script type="text/javascript" src="assets/moments.js"></script>
 <script type="text/javascript" src="assets/logic.js"></script>

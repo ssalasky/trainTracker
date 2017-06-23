@@ -1,0 +1,21 @@
+.jumbotron {
+	background-color: blue;
+	color: white;
+}
+
+.panel-heading {
+	background-color: blue;
+}
+
+input {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+button {
+	margin-top: 5px;
+}
+
+label {
+	margin-top: 8px;
+}
